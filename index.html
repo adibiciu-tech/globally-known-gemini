@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOL - Globally Known</title>
+  
+  <!-- PWA & App Icons -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="app-icon.png">
+  <link rel="apple-touch-icon" href="app-icon.png">
+  <meta name="theme-color" content="#4f46e5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Prism.js Syntax Highlighting Theme (Tomorrow Night) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css?v=18940">
+  <!-- CodeMirror CSS for Code Editor -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+  
+  <!-- Prism.js Core & Autoloader -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+  
+  
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Sliding Sidebar -->
+    <aside class="sidebar expanded" id="sidebar">
+      
+      <!-- Top profile/brand header -->
+      <div class="sidebar-header">
+        <div class="brand">
+          <img src="logo.png" alt="Globally Known Logo" class="brand-logo-img">
+          <span class="brand-text">Globally Known</span>
+        </div>
+      </div>
+
+      <!-- Navigation tabs list matching hand-drawn sketch (No numbers, customized dividers) -->
+      <nav class="sidebar-nav">
+        <ul class="nav-list">
+          
+          <!-- Category 0: Sol -->
+          <li class="nav-item" data-panel="sol-chat" onclick="window.switchPanel('sol-chat')" title="Sol">
+            <i class="fa-solid fa-comment-dots nav-icon"></i>
+            <span class="nav-label">Sol</span>
+          </li>
+          
+          <!-- Category 1: Start Here -->
+          <li class="nav-item active" data-panel="start-here" onclick="window.switchPanel('start-here')" title="Start Here">
+            <i class="fa-solid fa-house nav-icon"></i>
+            <span class="nav-label">Start Here</span>
+          </li>
+          
+          <!-- Category 2: Globally Known Community -->
+          <li class="nav-item" data-panel="community" onclick="window.switchPanel('community')" title="Globally Known Community">
+            <i class="fa-solid fa-users nav-icon"></i>
+            <span class="nav-label">Globally Known Community</span>
+          </li>
+          
+          <!-- Category 3: Random Word Generator With Guided Pronunciation -->
+          <li class="nav-item" data-panel="random-word" onclick="window.switchPanel('random-word')" title="Random Word Generator With Guided Pronunciation">
+            <i class="fa-solid fa-shuffle nav-icon"></i>
+            <span class="nav-label">Random Word Generator With Guided Pronunciation</span>
+          </li>
+
+          <!-- separating horizontal line after 3 -->
+          <hr class="sidebar-divider">
+
+          <!-- Category 4: Organized Comprehensible Input Videos -->
+          <li class="nav-item" data-panel="videos" onclick="window.switchPanel('videos')" title="Organized Comprehensible Input Videos">
+            <i class="fa-solid fa-video nav-icon"></i>
+            <span class="nav-label">Organized Comprehensible Input Videos</span>
+          </li>
+
+          <!-- Category 5: The Visual Dictionary -->
+          <li class="nav-item" data-panel="dictionary" onclick="window.switchPanel('dictionary')" title="The Visual Dictionary">
+            <i class="fa-solid fa-book-open nav-icon"></i>
+            <span class="nav-label">The Visual Dictionary</span>
+          </li>
+
+          <!-- Category 6: The Describing Lab -->
+          <li class="nav-item" data-panel="describing-lab" onclick="window.switchPanel('describing-lab')" title="The Describing Lab">
+            <i class="fa-solid fa-eye nav-icon"></i>
+            <span class="nav-label">The Describing Lab</span>
+          </li>
+
+          <!-- Category 7: The Output Practicing -->
+          <li class="nav-item" data-panel="output-practicing" onclick="window.switchPanel('output-practicing')" title="The Output Practicing">
+            <i class="fa-solid fa-comments nav-icon"></i>
+            <span class="nav-label">The Output Practicing</span>
+          </li>
+
+          <!-- separating horizontal line after 7 -->
+          <hr class="sidebar-divider">
+
+          <!-- Category 8: Info / Settings -->
+          <li class="nav-item" data-panel="info" onclick="window.switchPanel('info')" title="Info / Settings">
+            <i class="fa-solid fa-circle-info nav-icon"></i>
+            <span class="nav-label">Info / Settings</span>
+          </li>
+
+          <!-- Separating horizontal line after Info / Settings -->
+          <hr class="sidebar-divider">
+
+          <!-- Conversations Section -->
+          <div class="sidebar-conversations-section">
+            <div class="sidebar-conversations-header">
+              <span class="conversations-title"><i class="fa-solid fa-comments"></i> Conversations</span>
+              <button class="new-chat-btn" id="btn-new-sol-chat" title="New Conversation">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+            
+            <ul class="conversations-list" id="sidebar-conversations-list">
+              <!-- Dynamically populated SOL conversation threads -->
+            </ul>
+          </div>
+
+        </ul>
+      </nav>
+
+      <!-- Sidebar Footer API Status -->
+      <div class="sidebar-footer">
+        <div class="api-status-badge" id="api-status-badge">
+          <span class="status-dot warning"></span>
+          <span class="status-text">Demo Mode</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Area containing Panels -->
+    <main class="chat-workspace">
+      
+      <!-- Top Mobile Navigation Header -->
+      <header class="chat-header">
+        <div class="header-left">
+          <button class="menu-toggle-btn" id="menu-toggle-btn" title="Toggle Sidebar">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          
+          <div class="current-chat-title-container">
+            <span class="chat-agent-badge" id="header-agent-badge">🎓</span>
+            <span class="chat-title-text" id="header-chat-title">Start Here</span>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <!-- PWA Install App Button -->
+          <button class="header-btn install-app-btn" id="btn-install-pwa" title="Install App on Desktop or Mobile">
+            <i class="fa-solid fa-download"></i> <span class="install-text">Install App</span>
+          </button>
+
+          <!-- Admin Access Control Button -->
+          <button class="header-btn admin-toggle-btn" id="btn-admin-toggle" title="Admin Edit Access Control">
+            <i class="fa-solid fa-lock" id="admin-lock-icon"></i> <span id="admin-toggle-text">Viewer Mode</span>
+          </button>
+
+          <!-- Google Auth Container -->
+          <div class="user-auth-container" id="user-auth-container"></div>
+
+          <div class="model-badge" id="header-model-badge">
+            <i class="fa-solid fa-brain"></i> SOL Engine
+          </div>
+          <div class="theme-picker-wrapper">
+            <button class="header-btn" id="theme-toggle-btn" onclick="window.toggleThemeDropdown(event)" title="Select Color Theme">
+              <i class="fa-solid fa-palette"></i>
+            </button>
+            
+            <div class="theme-dropdown-menu hidden" id="theme-dropdown-menu">
+              <div class="theme-menu-title">Select Color Theme</div>
+              <button class="theme-option-btn active" data-theme-val="dark">
+                <span class="theme-color-dot" style="background: #f6ca21;"></span>
+                <span>Sol Amber</span>
+              </button>
+              <button class="theme-option-btn" data-theme-val="cyan">
+                <span class="theme-color-dot" style="background: #06b6d4;"></span>
+                <span>Cyber Cyan</span>
+              </button>
+              <button class="theme-option-btn" data-theme-val="emerald">
+                <span class="theme-color-dot" style="background: #10b981;"></span>
+                <span>Emerald Mint</span>
+              </button>
+              <button class="theme-option-btn" data-theme-val="purple">
+                <span class="theme-color-dot" style="background: #c084fc;"></span>
+                <span>Amethyst Violet</span>
+              </button>
+              <button class="theme-option-btn" data-theme-val="crimson">
+                <span class="theme-color-dot" style="background: #f43f5e;"></span>
+                <span>Crimson Sunset</span>
+              </button>
+              <button class="theme-option-btn" data-theme-val="rainbow">
+                <span class="theme-color-dot" style="background: linear-gradient(135deg, #ff007f, #ffeb00, #00e5ff);"></span>
+                <span>Spectrum Rainbow</span>
+              </button>
+              <button class="theme-option-btn" data-theme-val="light">
+                <span class="theme-color-dot" style="background: #e2e8f0; border: 1px solid #94a3b8;"></span>
+                <span>Minimal Light</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Workspace Panels Container -->
+      <section class="panels-container" id="panels-container">
+
+        <!-- 0. Panel: Sol Chat Assistant (Dedicated Sol AI Assistant Panel) -->
+        <div class="workspace-panel" id="panel-sol-chat">
+          <div class="gemini-home-content">
+            <!-- Theme-Colored Animated Sol Graphic Icon (Hand-Crafted Native Vector SVG) -->
+            <div class="sol-eye-icon-wrapper" id="sol-eye-icon" title="SOL - Globally Known">
+              <svg class="sol-eye-icon-svg" viewBox="0 0 100 155" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <!-- Subtle Tactile Surface Texture Filter for Rainbow Theme -->
+                  <filter id="solGentleTexture" x="-10%" y="-10%" width="120%" height="120%">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise" />
+                    <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.16 0" in="noise" result="coloredNoise" />
+                    <feComposite operator="in" in2="SourceGraphic" result="compositeNoise" />
+                    <feBlend mode="overlay" in="compositeNoise" in2="SourceGraphic" />
+                  </filter>
+                </defs>
+                <!-- 1. Top Exclamation Mark Stem (Micro-Rounded Shoulder with Shallow Gentle Bottom Arch) -->
+                <path class="sol-stem" d="M 37.6 78 L 37.6 56 C 37.6 44, 42.2 10, 50 0 C 57.8 10, 62.4 44, 62.4 56 L 62.4 78 Q 50 71 37.6 78 Z" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                
+                <!-- 2. 5 Radiating Eyelash Lines (Perfectly Balanced Fan Spread) -->
+                <g class="sol-rays">
+                  <line x1="20.9" y1="101.9" x2="16.3" y2="91.9" stroke-width="4.5" stroke-linecap="round" />
+                  <line x1="35.0" y1="97.4" x2="32.9" y2="86.6" stroke-width="4.5" stroke-linecap="round" />
+                  <line x1="50.0" y1="96.0" x2="50.0" y2="85.0" stroke-width="4.5" stroke-linecap="round" />
+                  <line x1="65.0" y1="97.4" x2="67.1" y2="86.6" stroke-width="4.5" stroke-linecap="round" />
+                  <line x1="79.1" y1="101.9" x2="83.7" y2="91.9" stroke-width="4.5" stroke-linecap="round" />
+                </g>
+                
+                <!-- 3. Outer Eye Almond Group (Blinks Vertically) -->
+                <g class="sol-eyelid-group">
+                  <!-- Almond Eye Outline -->
+                  <path class="sol-eye-outline" d="M 12 120 C 26 100 74 100 88 120 C 74 140 26 140 12 120 Z" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                  
+                  <!-- 4. Pupil & Iris Group (Translates Left -> Right -> Center) -->
+                  <g class="sol-pupil-group">
+                    <!-- Iris Outer Ring Circle -->
+                    <circle class="sol-iris" cx="50" cy="120" r="11.5" stroke-width="4.5" fill="none" />
+                    
+                    <!-- Inner Pupil Solid Dot -->
+                    <circle class="sol-pupil-dot" cx="50" cy="120" r="5.8" />
+                    
+                    <!-- Pupil Reflection Highlight Dot -->
+                    <circle class="sol-pupil-highlight" cx="47.8" cy="117.8" r="1.8" />
+                  </g>
+                </g>
+              </svg>
+            </div>
+
+            <!-- Centered Greeting -->
+            <h1 class="gemini-home-greeting" id="gemini-greeting-text">Ask away, Adrian!</h1>
+
+            <!-- Centered Input Bar Wrapper -->
+            <div class="gemini-input-wrapper">
+              <div class="gemini-home-glow-bg"></div>
+
+              <div class="gemini-home-input-bar">
+                <button class="gemini-bar-icon-btn" id="btn-home-attach" title="Add Image or File">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+                
+                <input type="text" id="gemini-home-input" name="gemini-home-input" placeholder="Ask Sol" autocomplete="off" />
+
+                <div class="gemini-home-model-selector" id="home-model-selector" title="Select AI Engine Model">
+                  <span class="model-blue-dot">●</span>
+                  <span class="model-name-text" id="home-model-name">Flash</span>
+                  <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                </div>
+
+                <button class="gemini-bar-icon-btn mic-btn" id="btn-home-mic" title="Voice Input">
+                  <i class="fa-solid fa-microphone"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Dynamic Inline Gemini Conversation Container -->
+            <div class="gemini-home-conversation" id="gemini-home-conversation"></div>
+          </div>
+        </div>
+
+        <!-- 1. Panel: Start Here (Globally Known Success Path Roadmap) -->
+        <div class="workspace-panel active" id="panel-start-here" style="display: flex !important; opacity: 1 !important; visibility: visible !important;">
+          <div class="success-path-container">
+            
+            <!-- Hero Header Banner -->
+            <div class="success-path-hero">
+              <div class="success-path-brand-badge">
+                <i class="fa-solid fa-crown"></i> GLOBALLY KNOWN
+              </div>
+              <h1 class="success-path-title">SUCCESS PATH</h1>
+              <p class="success-path-subtitle">Your step-by-step roadmap from initial comprehensible input to automatic native-like fluency.</p>
+              
+              <div class="success-path-stats-row">
+                <div class="success-path-stat-card">
+                  <i class="fa-solid fa-chart-line stat-icon"></i>
+                  <div>
+                    <div class="stat-val">30%</div>
+                    <div class="stat-lbl">Progress</div>
+                  </div>
+                </div>
+                <div class="success-path-stat-card">
+                  <i class="fa-solid fa-unlock-keyhole stat-icon"></i>
+                  <div>
+                    <div class="stat-val">3 / 10</div>
+                    <div class="stat-lbl">Unlocked</div>
+                  </div>
+                </div>
+                <div class="success-path-stat-card">
+                  <i class="fa-solid fa-compass stat-icon"></i>
+                  <div>
+                    <div class="stat-val">Module 3</div>
+                    <div class="stat-lbl">Active Stage</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Staggered Timeline Modules -->
+            <div class="success-path-timeline">
+
+              <!-- Module 1 (Left) -->
+              <div class="path-module-row left completed">
+                <div class="path-node-marker"><i class="fa-solid fa-check"></i></div>
+                <div class="path-module-card">
+                  <div class="module-thumb-box"><i class="fa-solid fa-layer-group"></i></div>
+                  <div class="module-info-body">
+                    <div>
+                      <div class="module-header-meta">
+                        <span class="module-num-badge">Module 01</span>
+                        <span class="module-status-pill completed">Completed</span>
+                      </div>
+                      <h3 class="module-card-title">Your Foundation</h3>
+                      <p class="module-card-desc">The acquisition mindset, language acquisition principles, and setting up your daily input environment.</p>
+                    </div>
+                    <button class="module-action-btn" onclick="window.switchPanel('info');">
+                      <i class="fa-solid fa-circle-info"></i> View Details
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Module 2 (Right) -->
+              <div class="path-module-row right completed">
+                <div class="path-node-marker"><i class="fa-solid fa-check"></i></div>
+                <div class="path-module-card">
+                  <div class="module-thumb-box"><i class="fa-solid fa-diagram-project"></i></div>
+                  <div class="module-info-body">
+                    <div>
+                      <div class="module-header-meta">
+                        <span class="module-num-badge">Module 02</span>
+                        <span class="module-status-pill completed">Completed</span>
+                      </div>
+                      <h3 class="module-card-title">Globally Known Hub</h3>
+                      <p class="module-card-desc">Your central learning station — tracking who's who, custom schedule, and member resources.</p>
+                    </div>
+                    <button class="module-action-btn" onclick="window.switchPanel('info');">
+                      <i class="fa-solid fa-sliders"></i> Configure Hub
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Module 3 (Left) -->
+              <div class="path-module-row left">
+                <div class="path-node-marker">3</div>
+                <div class="path-module-card" style="border-color: rgba(246, 202, 33, 0.5); box-shadow: 0 10px 30px rgba(246, 202, 33, 0.15);">
+                  <div class="module-thumb-box" style="background: linear-gradient(135deg, rgba(246, 202, 33, 0.3), rgba(15, 23, 42, 0.9));"><i class="fa-solid fa-users"></i></div>
+                  <div class="module-info-body">
+                    <div>
+                      <div class="module-header-meta">
+                        <span class="module-num-badge">Module 03</span>
+                        <span class="module-status-pill unlocked">Current Stage</span>
+                      </div>
+                      <h3 class="module-card-title">Community & Membership</h3>
+                      <p class="module-card-desc">Connect with language coaches, post comprehension logs, and subscribe to community live streams.</p>
+                    </div>
+                    <button class="module-action-btn" onclick="window.switchPanel('community');">
+                      <i class="fa-solid fa-arrow-right"></i> Open Community
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Module 4 (Right) -->
+              <div class="path-module-row right">
+                <div class="path-node-marker">4</div>
+                <div class="path-module-card">
+                  <div class="module-thumb-box"><i class="fa-solid fa-clapperboard"></i></div>
+                  <div class="module-info-body">
+                    <div>
+                      <div class="module-header-meta">
+                        <span class="module-num-badge">Module 04</span>
+                        <span class="module-status-pill unlocked">Unlocked</span>
+                      </div>
+                      <h3 class="module-card-title">Input Video Engine</h3>
+                      <p class="module-card-desc">Structured video vlogs with playback speed control, transcripts, and natural spoken speed absorption.</p>
+                    </div>
+                    <button class="module-action-btn" onclick="window.switchPanel('videos');">
+                      <i class="fa-solid fa-play"></i> Watch Videos
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Module 5 (Left) -->
+              <div class="path-module-row left">
+                <div class="path-node-marker">5</div>
+                <div class="path-module-card">
+                  <div class="module-thumb-box"><i class="fa-solid fa-book-open"></i></div>
+                  <div class="module-info-body">
+                    <div>
+                      <div class="module-header-meta">
+                        <span class="module-num-badge">Module 05</span>
+                        <span class="module-status-pill unlocked">Unlocked</span>
+                      </div>
+                      <h3 class="module-card-title">The Visual Dictionary</h3>
+                      <p class="module-card-desc">High-frequency visual card slideshows with native voiceovers, image context, and rapid recall.</p>
+                    </div>
+                    <button class="module-action-btn" onclick="window.switchPanel('dictionary');">
+                      <i class="fa-solid fa-book"></i> Open Dictionary
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Module 6 (Right) -->
+              <div class="path-module-row right">
+                <div class="path-node-marker">6</div>
+                <div class="path-module-card">
+                  <div class="module-thumb-box"><i class="fa-solid fa-eye"></i></div>
+                  <div class="module-info-body">
+                    <div>
+                      <div class="module-header-meta">
+                        <span class="module-num-badge">Module 06</span>
+                        <span class="module-status-pill unlocked">Unlocked</span>
+                      </div>
+                      <h3 class="module-card-title">The Describing Lab</h3>
+                      <p class="module-card-desc">Visual scene analysis where you describe real-world images and receive AI feedback on vocabulary accuracy.</p>
+                    </div>
+                    <button class="module-action-btn" onclick="window.switchPanel('describing-lab');">
+                      <i class="fa-solid fa-eye"></i> Enter Lab
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Module 7 (Left) -->
+              <div class="path-module-row left">
+                <div class="path-node-marker">7</div>
+                <div class="path-module-card">
+                  <div class="module-thumb-box"><i class="fa-solid fa-microphone-lines"></i></div>
+                  <div class="module-info-body">
+                    <div>
+                      <div class="module-header-meta">
+                        <span class="module-num-badge">Module 07</span>
+                        <span class="module-status-pill unlocked">Unlocked</span>
+                      </div>
+                      <h3 class="module-card-title">Output & Shadowing</h3>
+                      <p class="module-card-desc">Voice recording, speech-to-text accuracy checks, and guided shadowing to build physical mouth muscle memory.</p>
+                    </div>
+                    <button class="module-action-btn" onclick="window.switchPanel('output-practicing');">
+                      <i class="fa-solid fa-microphone"></i> Practice Output
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Module 8 (Right) -->
+              <div class="path-module-row right">
+                <div class="path-node-marker">8</div>
+                <div class="path-module-card">
+                  <div class="module-thumb-box"><i class="fa-solid fa-shuffle"></i></div>
+                  <div class="module-info-body">
+                    <div>
+                      <div class="module-header-meta">
+                        <span class="module-num-badge">Module 08</span>
+                        <span class="module-status-pill unlocked">Unlocked</span>
+                      </div>
+                      <h3 class="module-card-title">Guided Pronunciation</h3>
+                      <p class="module-card-desc">Random word generator with phonetic breakdowns, mouth positioning guides, and voice matching.</p>
+                    </div>
+                    <button class="module-action-btn" onclick="window.switchPanel('random-word');">
+                      <i class="fa-solid fa-shuffle"></i> Launch Generator
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Module 9 (Left) -->
+              <div class="path-module-row left">
+                <div class="path-node-marker">9</div>
+                <div class="path-module-card">
+                  <div class="module-thumb-box"><i class="fa-solid fa-brain"></i></div>
+                  <div class="module-info-body">
+                    <div>
+                      <div class="module-header-meta">
+                        <span class="module-num-badge">Module 09</span>
+                        <span class="module-status-pill unlocked">Unlocked</span>
+                      </div>
+                      <h3 class="module-card-title">AI Immersion with Sol</h3>
+                      <p class="module-card-desc">Engage in fluid, open-ended conversational dialogues with your personal Sol AI assistant.</p>
+                    </div>
+                    <button class="module-action-btn" onclick="window.switchPanel('sol-chat');">
+                      <i class="fa-solid fa-comment-dots"></i> Chat with Sol
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Module 10 (Right) -->
+              <div class="path-module-row right">
+                <div class="path-node-marker">10</div>
+                <div class="path-module-card">
+                  <div class="module-thumb-box"><i class="fa-solid fa-trophy"></i></div>
+                  <div class="module-info-body">
+                    <div>
+                      <div class="module-header-meta">
+                        <span class="module-num-badge">Module 10</span>
+                        <span class="module-status-pill unlocked">Unlocked</span>
+                      </div>
+                      <h3 class="module-card-title">Conversation Domination</h3>
+                      <p class="module-card-desc">Automatic comprehension, high-level spoken fluency, and complete language acquisition mastery.</p>
+                    </div>
+                    <button class="module-action-btn" onclick="window.switchPanel('sol-chat');">
+                      <i class="fa-solid fa-award"></i> View Certificate
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div class="workspace-panel" id="panel-community">
+          <div class="circle-layout">
+            <!-- Col 1: Left Navigation Sidebar -->
+            <aside class="circle-left-sidebar">
+              <div class="circle-logo-row">
+                <span class="circle-logo-text">Globally Known</span>
+              </div>
+              
+              <nav class="circle-nav">
+                <!-- Getting Started Category -->
+                <div class="circle-nav-category">
+                  <span class="category-title">Getting Started</span>
+                  <div class="circle-nav-item" data-channel="home">
+                    <i class="fa-solid fa-house"></i> <span>Home</span>
+                  </div>
+                  <div class="circle-nav-item" data-channel="members-tab">
+                    <i class="fa-solid fa-users"></i> <span>Members</span>
+                  </div>
+                </div>
+                
+                <!-- Learning Channels Category -->
+                <div class="circle-nav-category">
+                  <span class="category-title">Learning Channels</span>
+                  <div class="circle-nav-item active" data-channel="announcements">
+                    <i class="fa-solid fa-bullhorn"></i> <span>announcements</span>
+                  </div>
+                  <div class="circle-nav-item" data-channel="english-inputs">
+                    <i class="fa-solid fa-hashtag"></i> <span>english-inputs</span>
+                  </div>
+                  <div class="circle-nav-item" data-channel="metaphors">
+                    <i class="fa-solid fa-hashtag"></i> <span>metaphors-discussion</span>
+                  </div>
+                </div>
+
+                <!-- Community Category -->
+                <div class="circle-nav-category">
+                  <span class="category-title">Community Hangouts</span>
+                  <div class="circle-nav-item" data-channel="general-chat">
+                    <i class="fa-solid fa-hashtag"></i> <span>general-chat</span>
+                  </div>
+                  <div class="circle-nav-item" data-channel="featurings">
+                    <i class="fa-solid fa-hashtag"></i> <span>featurings</span>
+                  </div>
+                </div>
+              </nav>
+            </aside>
+
+            <!-- Col 2: Middle Feed Panel -->
+            <section class="circle-middle-feed">
+              <!-- Channel Header -->
+              <div class="circle-channel-header">
+                <div class="header-left-info">
+                  <h2 id="circle-channel-title"># announcements</h2>
+                  <span class="circle-channel-meta" id="circle-channel-desc">Official updates and notices from the SOL Globally Known team.</span>
+                </div>
+                <button class="circle-new-post-btn" id="btn-circle-new-post">
+                  <i class="fa-solid fa-plus"></i> New Post
+                </button>
+              </div>
+
+              <!-- Feed Tab switcher -->
+              <div class="circle-feed-tabs">
+                <button class="tab-btn active" id="tab-btn-posts">Posts</button>
+                <button class="tab-btn" id="tab-btn-members">Members</button>
+              </div>
+
+              <!-- Dynamic Feed Card List -->
+              <div class="circle-posts-feed" id="circle-posts-feed">
+                <!-- Populated dynamically by app.js -->
+              </div>
+            </section>
+
+            <!-- Col 3: Right Widgets Sidebar -->
+            <aside class="circle-right-sidebar">
+              <!-- Checklist widget -->
+              <div class="circle-widget">
+                <h3 class="widget-title">Get Started</h3>
+                <div class="circle-checklist">
+                  <label for="check-nexus" class="checklist-item">
+                    <input type="checkbox" id="check-nexus" name="check-nexus" checked disabled>
+                    <span class="item-text">Explore SOL Nexus</span>
+                  </label>
+                  <label for="check-api-key" class="checklist-item">
+                    <input type="checkbox" id="check-api-key" name="check-api-key">
+                    <span class="item-text">Enter your API Key</span>
+                  </label>
+                  <label for="check-videos" class="checklist-item">
+                    <input type="checkbox" id="check-videos" name="check-videos">
+                    <span class="item-text">Watch 1st video lesson</span>
+                  </label>
+                  <label for="check-pronounce" class="checklist-item">
+                    <input type="checkbox" id="check-pronounce" name="check-pronounce">
+                    <span class="item-text">Analyze word accent</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Online members list widget -->
+              <div class="circle-widget">
+                <h3 class="widget-title">Members</h3>
+                <div class="circle-members-list" id="widget-members-list">
+                  <!-- Populated dynamically -->
+                </div>
+              </div>
+
+              <!-- Pinned Resources widget -->
+              <div class="circle-widget">
+                <h3 class="widget-title">Pinned resources</h3>
+                <div class="circle-pinned-posts">
+                  <a href="#info" class="pinned-post-link" data-action="guide">
+                    <i class="fa-solid fa-file-lines"></i> How To Access SOL 2.0 Engine
+                  </a>
+                  <a href="#videos" class="pinned-post-link" data-action="schedule">
+                    <i class="fa-solid fa-calendar-days"></i> Globally Known Weekly Schedule
+                  </a>
+                  <a href="#dictionary" class="pinned-post-link" data-action="rules">
+                    <i class="fa-solid fa-circle-info"></i> Community Rules & Guidelines
+                  </a>
+                </div>
+              </div>
+            </aside>
+          </div>
+
+          <!-- Circle Post Composer Modal -->
+          <div class="circle-composer-modal hidden" id="circle-composer-modal">
+            <div class="circle-modal-content">
+              <div class="modal-header">
+                <h3>Create a New Post</h3>
+                <button class="close-modal-btn" id="btn-close-circle-modal"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+              <form id="circle-post-form">
+                <div class="form-group">
+                  <label for="circle-post-title" class="sr-only">Post Title</label>
+                  <input type="text" id="circle-post-title" name="circle-post-title" placeholder="Title of your post..." required autocomplete="off">
+                </div>
+                <div class="form-group">
+                  <label for="circle-post-body" class="sr-only">Post Content</label>
+                  <textarea id="circle-post-body" name="circle-post-body" placeholder="Share study tips, questions, or updates..." required></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="circle-post-image" class="sr-only">Image URL</label>
+                  <input type="text" id="circle-post-image" name="circle-post-image" placeholder="Image URL (optional)..." autocomplete="off">
+                </div>
+                <button type="submit" class="circle-submit-post-btn">Publish Post</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Panel: Random Word Generator With Guided Pronunciation -->
+        <!-- 3. Panel: Random Word Generator With Guided Pronunciation (Original RWGGP Codex Layout) -->
+        <div class="workspace-panel" id="panel-random-word">
+          <div class="rwggp-page-wrapper">
+            <!-- Header Section -->
+            <div class="rwggp-top-header">
+              <h1 class="rwggp-title">Random Word Generator With Guided Pronunciation</h1>
+              <p class="rwggp-subtitle">Database: 2,978 common English words</p>
+              
+              <button class="rwggp-metronome-icon-btn" id="btn-toggle-metronome" type="button">
+                <svg class="metronome-pendulum-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                  <!-- Base Rounded Platform Bar -->
+                  <rect x="3.5" y="19.5" width="17" height="2.2" rx="1.1" stroke="currentColor" stroke-width="1.05" fill="none" />
+                  <!-- Triangular Pyramid Body -->
+                  <polygon points="12,3 4.8,19.5 19.2,19.5" stroke="currentColor" stroke-width="1.05" stroke-linejoin="round" fill="none" />
+                  <!-- Vertical Center Scale Line -->
+                  <line x1="12" y1="5" x2="12" y2="19.5" stroke="currentColor" stroke-width="1.0" />
+                  <!-- Diagonal Swinging Pendulum Arm extending to top-left -->
+                  <line x1="8.5" y1="8" x2="12.5" y2="19" stroke="currentColor" stroke-width="1.05" />
+                  <!-- Weight Circle Slider centered near bottom on scale axis -->
+                  <circle cx="12" cy="16.2" r="2.1" stroke="currentColor" stroke-width="1.0" fill="#ffffff" />
+                </svg>
+                <span>Metronome</span>
+              </button>
+            </div>
+
+            <!-- Generate Button -->
+            <div class="rwggp-generate-wrapper">
+              <button class="rwggp-generate-btn" id="btn-generate-random-word">
+                <i class="fa-solid fa-shuffle"></i> Generate Random Word
+              </button>
+            </div>
+
+            <!-- Search & Analyze Input -->
+            <div class="rwggp-search-wrapper">
+              <form class="rwggp-search-form" id="rwggp-analyze-form">
+                <label for="rwggp-analyze-input" class="sr-only">Analyze word</label>
+                <input type="text" id="rwggp-analyze-input" name="rwggp-analyze-input" placeholder="Enter a word to analyze..." autocomplete="off">
+                <button type="submit" class="rwggp-analyze-btn">
+                  <i class="fa-solid fa-magnifying-glass"></i> Analyze
+                </button>
+              </form>
+            </div>
+
+            <!-- Active Word Presentation Display Card (Hidden until word is generated) -->
+            <div class="rwggp-card rwggp-word-card hidden" id="rwggp-word-card">
+              <div class="rwggp-word-inner">
+                <button type="button" class="rwggp-speaker-btn" id="btn-listen-pronunciation" title="Listen to US English Pronunciation">
+                  <i class="fa-solid fa-volume-high"></i>
+                </button>
+                
+                <div class="rwggp-word-text" id="rwggp-word-title"></div>
+                <div class="rwggp-word-details">
+                  <p class="rwggp-sound" id="rwggp-phonetic"></p>
+                  <p class="rwggp-meta">Category Name: <span class="font-semibold" id="rwggp-category-name"></span></p>
+                  <p class="rwggp-meaning">Handy Meaning: <span class="italic" id="rwggp-definition"></span></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Word History Card (Hidden initially if empty) -->
+            <div class="rwggp-card rwggp-history-card hidden">
+              <div class="rwggp-card-header">
+                <h3 class="rwggp-card-title">Word History</h3>
+                <button class="rwggp-clear-btn" id="btn-clear-history">
+                  <i class="fa-solid fa-xmark"></i> Clear
+                </button>
+              </div>
+              <div class="rwggp-history-list" id="rwggp-history-container">
+                <!-- Word history rows populated dynamically -->
+              </div>
+            </div>
+
+            <!-- Savings Card -->
+            <div class="rwggp-card rwggp-savings-card">
+              <div class="rwggp-card-header">
+                <h3 class="rwggp-card-title"><i class="fa-regular fa-bookmark" style="color: #6366f1;"></i> Savings</h3>
+              </div>
+              <div class="rwggp-savings-accordion" id="rwggp-savings-container">
+                <!-- Saved lists accordions populated dynamically -->
+              </div>
+            </div>
+
+            <!-- Color Vowel Chart Card -->
+            <div class="rwggp-card rwggp-chart-card">
+              <div class="rwggp-card-header">
+                <h3 class="rwggp-card-title rwggp-chart-title">Color Vowel Chart by Karen Taylor and Shirley Thompson</h3>
+              </div>
+              <div class="rwggp-chart-image-wrapper">
+                <img src="color-vowel-chart.png" alt="Color Vowel Chart" class="rwggp-chart-img" id="rwggp-chart-img">
+              </div>
+              <p class="rwggp-chart-attribution">Shared by Adrian Milla</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Panel: Organized Comprehensible Input Videos -->
+        <div class="workspace-panel" id="panel-videos">
+          <div class="panel-section">
+            <h2>📺 Comprehensible Input Library</h2>
+            <p class="section-subtitle">Watch curated content graded to your language level for optimal acquisition.</p>
+
+             <div class="video-grid" id="video-grid">
+               <!-- Loaded dynamically by app.js -->
+             </div>
+
+             <!-- Playlist Modal Window (Netflix-style horizontal carousel popup, hidden by default) -->
+             <div id="playlist-modal" class="modal-overlay hidden">
+               <div class="playlist-modal-window">
+                 <button class="modal-close-btn" id="btn-close-playlist-modal" title="Close Window">
+                   &times;
+                 </button>
+                 
+                 <div class="playlist-modal-content">
+                   <div class="playlist-detail-header" style="display: flex; flex-direction: column; gap: 0.5rem; padding-right: 3rem;">
+                     <h2 id="playlist-title" style="margin: 0; font-size: 1.5rem; color: #ffffff;">Comprehensible Spanish for Beginners</h2>
+                     <p id="playlist-desc" class="section-subtitle" style="margin: 0; font-size: 0.9rem;">A slow, clear story in Spanish using visual guides to aid natural acquisition.</p>
+                   </div>
+
+                   <!-- Main Active Video Player -->
+                   <div class="main-video-player-container">
+                     <iframe id="main-playlist-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                   </div>
+
+                   <!-- Netflix-Style Horizontal Episodes Carousel -->
+                   <div class="episodes-carousel-section">
+                     <h3 style="font-size: 1.1rem; margin: 0 0 0.5rem 0; color: #ffffff;">Episodes & Playlist Videos</h3>
+                     <div class="carousel-wrapper">
+                       <button class="carousel-nav-btn prev-btn" id="btn-carousel-prev" title="Scroll Left">
+                         <i class="fa-solid fa-chevron-left"></i>
+                       </button>
+                       
+                       <div class="episodes-carousel-track" id="episodes-carousel-track">
+                         <!-- Dynamically populated episode cards -->
+                       </div>
+
+                       <button class="carousel-nav-btn next-btn" id="btn-carousel-next" title="Scroll Right">
+                         <i class="fa-solid fa-chevron-right"></i>
+                       </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Debug Diagnostics Info Box -->
+              <div id="debug-info-box" style="margin-top: 3rem; padding: 1.25rem; background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.12); border-radius: 12px; font-size: 0.82rem; font-family: monospace; color: var(--text-secondary); max-width: 100%; box-sizing: border-box; line-height: 1.5;">
+                <h4 style="margin: 0 0 0.5rem 0; color: #ffffff; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
+                  <i class="fa-solid fa-bug" style="color: var(--accent-yellow);"></i> Diagnostics & Cache Audit
+                </h4>
+                <div style="margin-bottom: 0.25rem;">Active Script Version: <span id="debug-version" style="color: var(--accent-yellow); font-weight: bold;">v6 (25-Lessons Release)</span></div>
+                <div style="margin-bottom: 0.25rem;">Active Categories loaded: <span id="debug-cat-count" style="color: #ffffff; font-weight: bold;">...</span></div>
+                <div style="margin-bottom: 0.25rem;">Lessons Count per Category: <span id="debug-lessons-count" style="color: #ffffff; font-weight: bold;">...</span></div>
+                <div style="margin-bottom: 0.5rem;">DOM Card elements rendered: <span id="debug-rendered-count" style="color: #ffffff; font-weight: bold;">...</span></div>
+                <div style="border-top: 1px dashed rgba(255,255,255,0.08); padding-top: 0.5rem; color: var(--text-tertiary);">
+                  If "Active Script Version" is not "v6 (25-Lessons Release)" or Card counts do not say 75, your browser is loading stale cached data. 
+                  Please hold <kbd style="background: rgba(255,255,255,0.1); padding: 1px 4px; border-radius: 3px;">Ctrl</kbd> and click the ↻ Refresh button, or click <strong>Reset SOL Workspace</strong> under Info / Settings.
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        <!-- 5. Panel: The Visual Dictionary -->
+        <div class="workspace-panel" id="panel-dictionary">
+          <div class="panel-section">
+            <h2>📖 The Visual Dictionary</h2>
+            <p class="section-subtitle">Browse interactive pronunciation slide decks built directly in the app.</p>
+
+            <!-- Cover View (Three cover cards as requested) -->
+            <div class="dict-cover-container" id="dict-cover-view">
+              <!-- Card 1: Body Parts -->
+              <div class="dict-cover-card" id="btn-start-body-slides">
+                <div class="cover-badge">SLIDE DECK</div>
+                <div class="cover-icon"><i class="fa-solid fa-person-half-dress"></i></div>
+                <div class="cover-details">
+                  <h2>Body Parts</h2>
+                  <p>Interactive pronunciation slides covering 17 pages of body parts, sound spellings, and pictorial guidelines. Click to open.</p>
+                </div>
+              </div>
+
+              <!-- Card 2: Inside The Bathroom -->
+              <div class="dict-cover-card" id="btn-start-bathroom-slides">
+                <div class="cover-badge">SLIDE DECK</div>
+                <div class="cover-icon"><i class="fa-solid fa-bath"></i></div>
+                <div class="cover-details">
+                  <h2>Inside The Bathroom</h2>
+                  <p>Interactive pronunciation slides covering 18 pages of bathroom objects, sound spellings, and pictorial guidelines. Click to open.</p>
+                </div>
+              </div>
+
+              <!-- Card 3: Sea Side -->
+              <div class="dict-cover-card" id="btn-start-seaside-slides">
+                <div class="cover-badge">SLIDE DECK</div>
+                <div class="cover-icon"><i class="fa-solid fa-umbrella-beach"></i></div>
+                <div class="cover-details">
+                  <h2>Sea Side</h2>
+                  <p>Interactive pronunciation slides covering 21 pages of sea side objects, sound spellings, and pictorial guidelines. Click to open.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slideshow View (Interactive viewer built directly in the app) -->
+            <div class="dict-slideshow-container hidden" id="dict-slideshow-view">
+              <button class="slide-back-circle-btn" id="btn-close-slides" title="Back to Cover">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              
+              <div class="slideshow-header">
+                <span class="slide-counter" id="slide-counter-label" style="margin-left: auto;">Slide 1 of 17</span>
+              </div>
+              
+              <div class="slide-display-area">
+                <div class="slide-image-wrapper" id="slide-image-wrapper-element">
+                  <img id="slide-image-element" src="assets/dict/page_1.png" alt="Body Parts Slide">
+                  
+                  <!-- Floating transparent circle buttons to snap to column anchors when zoomed -->
+                  <button class="zoom-anchor-btn anchor-left" id="btn-anchor-left" title="Jump to Left Column">
+                    <i class="fa-solid fa-circle-dot"></i>
+                  </button>
+                  <button class="zoom-anchor-btn anchor-center" id="btn-anchor-center" title="Jump to Center Column">
+                    <i class="fa-solid fa-circle-dot"></i>
+                  </button>
+                  <button class="zoom-anchor-btn anchor-right" id="btn-anchor-right" title="Jump to Right Column">
+                    <i class="fa-solid fa-circle-dot"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Pagination dots and arrows underneath the slide as requested -->
+              <div class="slideshow-pagination-controls">
+                <button class="slide-nav-arrow prev" id="btn-prev-slide" title="Previous Slide">
+                  <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <div class="slide-dots-container" id="slide-dots-container">
+                  <!-- Generated dynamically in app.js -->
+                </div>
+                <button class="slide-nav-arrow next" id="btn-next-slide" title="Next Slide">
+                  <i class="fa-solid fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 6. Panel: The Describing Lab -->
+        <div class="workspace-panel" id="panel-describing-lab">
+          <div class="panel-section">
+            <h2>🎯 The Describing Lab</h2>
+            <p class="section-subtitle">Describe scenes in your target language and receive analytical linguistic feedbacks.</p>
+
+            <div class="describing-lab-layout">
+              <div class="lab-image-container">
+                <!-- Visual asset from Unsplash placeholder -->
+                <img id="lab-image" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="Scenic description image">
+                <button class="secondary-btn" id="lab-change-image-btn"><i class="fa-solid fa-image"></i> Switch Landscape</button>
+              </div>
+
+              <div class="lab-composer">
+                <h3><label for="lab-text-input">Write your description:</label></h3>
+                <textarea id="lab-text-input" name="lab-text-input" placeholder="Describe the beach, the waves, the sky, the colors... (e.g. En la playa hay arena fina...)"></textarea>
+                <button class="primary-btn" id="lab-submit-btn"><i class="fa-solid fa-spell-check"></i> Evaluate Description</button>
+                
+                <div class="lab-feedback-container hidden" id="lab-feedback">
+                  <!-- Evaluated details -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. Panel: The Output Practicing -->
+        <div class="workspace-panel" id="panel-output-practicing">
+          
+          <!-- Messaging Subheader (specific to dialog sessions) -->
+          <div class="output-sub-controls">
+            <!-- Agent select -->
+            <div class="control-select-container">
+              <label for="agent-select"><i class="fa-solid fa-robot"></i> Persona:</label>
+              <select id="agent-select" name="agent-select" class="control-select">
+                <option value="general">SOL General</option>
+                <option value="grammar">SOL Grammar</option>
+                <option value="comprehension">SOL Comprehension</option>
+                <option value="vocab">SOL Vocab</option>
+              </select>
+            </div>
+
+            <!-- Model select -->
+            <div class="control-select-container">
+              <label for="model-select"><i class="fa-solid fa-brain"></i> Model:</label>
+              <select id="model-select" name="model-select" class="control-select">
+                <option value="gemini-1.5-flash">Gemini 1.5 Flash (Fast)</option>
+                <option value="gemini-1.5-pro">Gemini 1.5 Pro (Reasoning)</option>
+              </select>
+            </div>
+
+            <button class="secondary-btn" id="clear-chat-btn" title="Reset Session"><i class="fa-solid fa-arrows-rotate"></i> Reset Session</button>
+          </div>
+
+          <!-- Dialog area -->
+          <div class="messages-list-wrapper">
+            
+            <div class="welcome-screen" id="welcome-screen">
+              <div class="welcome-header">
+                <div class="welcome-logo">
+                  <i class="fa-solid fa-comments"></i>
+                </div>
+                <h1 id="welcome-agent-title">SOL General Assistant</h1>
+                <p id="welcome-agent-tagline">Conversational practice, language facts, and learning tips.</p>
+              </div>
+
+              <!-- Prompt Suggestions -->
+              <div class="suggestions-container">
+                <h3>Suggested Language Exercises</h3>
+                <div class="suggestions-grid" id="suggestions-grid">
+                  <!-- Populated dynamically by app.js -->
+                </div>
+              </div>
+            </div>
+
+            <div class="messages-list" id="messages-list"></div>
+          </div>
+
+          <!-- Bottom Prompt Form -->
+          <div class="output-chat-footer">
+            <form class="chat-form" id="chat-form" onsubmit="return false;">
+              <div class="text-input-row">
+                <label for="user-input" class="sr-only">Type a message</label>
+                <textarea id="user-input" name="user-input" rows="1" placeholder="Type a message or practice dialog..." required autocomplete="off"></textarea>
+                <button type="submit" class="send-btn" id="send-btn" title="Send message" disabled>
+                  <i class="fa-solid fa-arrow-up"></i>
+                </button>
+              </div>
+            </form>
+            <div class="disclaimer-text">SOL may display inaccurate info. Verify important responses.</div>
+          </div>
+        </div>
+
+        <!-- 8. Panel: Info / Settings -->
+        <div class="workspace-panel" id="panel-info">
+          <div class="panel-section">
+            <h2>⚙️ SOL Configurations & Settings</h2>
+            <p class="section-subtitle">Manage your local storage API Key credentials and clear workspaces.</p>
+
+            <div class="settings-card">
+              <div class="setting-group">
+                <label for="api-key-input" class="setting-label">Gemini API Key</label>
+                <div class="api-input-wrapper">
+                  <input type="password" id="api-key-input" name="api-key-input" placeholder="AIzaSy..." autocomplete="off">
+                  <button type="button" class="toggle-password-btn" id="toggle-password-btn">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                </div>
+                <p class="setting-help">
+                  SOL runs client-side directly on top of the Gemini API. Your API Key is saved locally in your browser and never sent to any external servers. 
+                  Get a free API key at the <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio <i class="fa-solid fa-external-link-alt"></i></a>.
+                </p>
+              </div>
+
+              <div class="settings-actions-footer">
+                <button class="primary-btn" id="save-settings-btn"><i class="fa-solid fa-check"></i> Save Configurations</button>
+              </div>
+            </div>
+
+            <div class="settings-card">
+              <h3>🎨 Appearance & Color Themes</h3>
+              <p class="setting-desc">Customize your SOL workspace color palette, glowing aura, and interface accent colors.</p>
+              
+              <div class="theme-swatches-grid" id="theme-swatches-container">
+                <button class="theme-swatch-card active" data-theme-val="dark">
+                  <div class="swatch-preview" style="background: #090a0f; border-color: #f6ca21;">
+                    <span class="swatch-dot" style="background: #f6ca21;"></span>
+                  </div>
+                  <span>Sol Amber</span>
+                </button>
+                <button class="theme-swatch-card" data-theme-val="cyan">
+                  <div class="swatch-preview" style="background: #030712; border-color: #06b6d4;">
+                    <span class="swatch-dot" style="background: #06b6d4;"></span>
+                  </div>
+                  <span>Cyber Cyan</span>
+                </button>
+                <button class="theme-swatch-card" data-theme-val="emerald">
+                  <div class="swatch-preview" style="background: #022c22; border-color: #10b981;">
+                    <span class="swatch-dot" style="background: #10b981;"></span>
+                  </div>
+                  <span>Emerald Mint</span>
+                </button>
+                <button class="theme-swatch-card" data-theme-val="purple">
+                  <div class="swatch-preview" style="background: #090514; border-color: #c084fc;">
+                    <span class="swatch-dot" style="background: #c084fc;"></span>
+                  </div>
+                  <span>Amethyst Violet</span>
+                </button>
+                <button class="theme-swatch-card" data-theme-val="crimson">
+                  <div class="swatch-preview" style="background: #110507; border-color: #f43f5e;">
+                    <span class="swatch-dot" style="background: #f43f5e;"></span>
+                  </div>
+                  <span>Crimson Sunset</span>
+                </button>
+                <button class="theme-swatch-card" data-theme-val="rainbow">
+                  <div class="swatch-preview" style="background: #0a0814; border-color: #ff007f;">
+                    <span class="swatch-dot" style="background: linear-gradient(135deg, #ff007f, #ffeb00, #00e5ff);"></span>
+                  </div>
+                  <span>Spectrum Rainbow</span>
+                </button>
+                <button class="theme-swatch-card" data-theme-val="light">
+                  <div class="swatch-preview" style="background: #ffffff; border-color: #94a3b8;">
+                    <span class="swatch-dot" style="background: #ca9e0d;"></span>
+                  </div>
+                  <span>Minimal Light</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="settings-card danger-card">
+              <h3>Reset Workspace</h3>
+              <p class="setting-desc">Deletes all saved localStorage sessions, custom cache settings, and resets your API key configuration.</p>
+              <button class="danger-btn" id="clear-all-data-btn">
+                <i class="fa-solid fa-trash-arrow-up"></i> Reset SOL Workspace
+              </button>
+            </div>
+            
+            <div class="settings-card about-card">
+              <h3>About SOL</h3>
+              <p class="about-text"><strong>SOL</strong> is designed to facilitate quick comprehension drills and pronunciation outputs using the high-performance Gemini LLM models.</p>
+              <div class="about-footer">SOL Studio &copy; 2026. Premium Static Client App.</div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- RWGGP Codex Modals -->
+  <!-- 1. Metronome Pop-out Modal Overlay -->
+  <div class="rwggp-modal-overlay hidden" id="modal-metronome">
+    <div class="metronome-popover-card" id="metronome-popover-card" onclick="event.stopPropagation()">
+      <button class="metronome-close-x" id="btn-close-metronome" title="Close Metronome">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      
+      <!-- Main Content Grid -->
+      <div class="metronome-popup-grid">
+        <!-- Left Column -->
+        <div class="metronome-left-col">
+          <!-- Top Row: Beat Pulse Dots & Circular Play Button -->
+          <div class="metronome-top-row">
+            <div class="beat-dots-container" id="metronome-beat-dots">
+              <span class="beat-dot active"></span>
+              <span class="beat-dot"></span>
+              <span class="beat-dot"></span>
+              <span class="beat-dot"></span>
+            </div>
+            
+            <button class="metronome-circle-play-btn" id="btn-metronome-play" title="Play/Pause Metronome">
+              <i class="fa-solid fa-play" id="metronome-play-icon"></i>
+            </button>
+          </div>
+
+          <!-- Time Signature Selector -->
+          <div class="metronome-section">
+            <label class="metronome-label">Time</label>
+            <div class="metronome-pills-row" id="time-signature-pills">
+              <button class="metronome-pill-btn" data-beats="2">2/4</button>
+              <button class="metronome-pill-btn" data-beats="3">3/4</button>
+              <button class="metronome-pill-btn active" data-beats="4">4/4</button>
+              <button class="metronome-pill-btn" data-beats="5">5/8</button>
+              <button class="metronome-pill-btn" data-beats="6">6/8</button>
+            </div>
+          </div>
+
+          <!-- Sound Selector -->
+          <div class="metronome-section">
+            <label class="metronome-label">Sound</label>
+            <div class="metronome-pills-row" id="sound-type-pills">
+              <button class="metronome-pill-btn active" data-sound="click">Click</button>
+              <button class="metronome-pill-btn" data-sound="wood">Wood</button>
+              <button class="metronome-pill-btn" data-sound="beep">Beep</button>
+              <button class="metronome-pill-btn" data-sound="tick">Tick</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vertical Divider Line -->
+        <div class="metronome-divider"></div>
+
+        <!-- Right Column -->
+        <div class="metronome-right-col">
+          <button class="metronome-arrow-btn" id="btn-bpm-preset-up" title="Next Preset">
+            <i class="fa-solid fa-chevron-up"></i>
+          </button>
+          
+          <div class="metronome-bpm-readout">
+            <div class="bpm-number" id="metronome-bpm-val">120</div>
+            <div class="bpm-preset-name" id="metronome-preset-name">Animato</div>
+          </div>
+
+          <div class="vertical-slider-wrapper">
+            <label for="metronome-bpm-slider" class="sr-only">BPM Tempo</label>
+            <input type="range" id="metronome-bpm-slider" name="metronome-bpm-slider" min="10" max="208" value="120" class="vertical-bpm-slider">
+          </div>
+
+          <button class="metronome-arrow-btn" id="btn-bpm-preset-down" title="Previous Preset">
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          
+          <span class="bpm-tag-label">BPM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Category Words Modal -->
+  <div class="rwggp-modal-overlay hidden" id="modal-category-words">
+    <div class="rwggp-modal-content category-modal">
+      <div class="modal-header">
+        <h3 id="cat-modal-title">GREEN TEA Words</h3>
+        <button class="close-modal-btn" id="btn-close-cat-modal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="cat-modal-body">
+        <div class="cat-words-grid" id="cat-words-container">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <!-- 3. Save Word Popover Modal -->
+  <div class="rwggp-modal-overlay hidden" id="modal-save-word" style="align-items:center; justify-content:center;">
+    <div class="save-word-popover" id="save-word-popover">
+      <!-- Header -->
+      <div class="save-popover-header">
+        <span class="save-popover-title">
+          <i class="fa-regular fa-bookmark save-popover-bookmark-icon"></i>
+          Save "<span id="save-modal-word-name">word</span>"
+        </span>
+        <button class="save-popover-close" id="btn-close-save-modal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Search lists input -->
+      <div class="save-popover-search-wrapper">
+        <i class="fa-solid fa-magnifying-glass save-popover-search-icon"></i>
+        <label for="save-popover-search" class="sr-only">Search lists</label>
+        <input type="text" id="save-popover-search" name="save-popover-search" class="save-popover-search" placeholder="Search lists..." autocomplete="off">
+      </div>
+
+      <!-- Inline create list row (hidden until + Create is clicked) -->
+      <div class="save-popover-create-row hidden" id="save-popover-create-row">
+        <label for="save-popover-new-list-name" class="sr-only">List name</label>
+        <input type="text" id="save-popover-new-list-name" name="save-popover-new-list-name" class="save-popover-new-list-input" placeholder="List name..." autocomplete="off">
+        <button class="save-popover-add-btn" id="btn-save-popover-add">Add</button>
+        <button class="save-popover-cancel-create" id="btn-save-popover-cancel-create"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Create new list button -->
+      <button class="save-popover-create-btn" id="btn-save-popover-create">
+        <i class="fa-solid fa-plus"></i> Create
+      </button>
+
+      <!-- Lists container -->
+      <div class="save-popover-lists" id="save-modal-lists-container">
+        <!-- Dynamically populated -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Worker Registration for PWA Installation (Desktop & Mobile) -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(err => console.log("SW reg error: ", err));
+      });
+    }
+  </script>
+
+  
+
+  <!-- Import map for Gemini Generative AI SDK (MUST be placed before module script) -->
+  <script type="importmap">
+    {
+      "imports": {
+        "@google/generative-ai": "https://esm.run/@google/generative-ai"
+      }
+    }
+  </script>
+  <!-- Application Logic -->
+  <script type="module" src="app.js?v=23000"></script>
+</body>
+</html>

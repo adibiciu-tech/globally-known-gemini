@@ -1,0 +1,65 @@
+const fs = require('fs');
+const zlib = require('zlib');
+
+// Trace sol_mask.png into pixel-exact SVG path elements
+const buffer = fs.readFileSync('sol_mask.png');
+let offset = 8;
+let width, height;
+let idatBuffers = [];
+
+while (offset < buffer.length) {
+  const length = buffer.readUInt32BE(offset);
+  const type = buffer.toString('ascii', offset + 4, offset + 8);
+  if (type === 'IHDR') {
+    width = buffer.readUInt32BE(offset + 8);
+    height = buffer.readUInt32BE(offset + 12);
+  } else if (type === 'IDAT') {
+    idatBuffers.push(buffer.slice(offset + 8, offset + 8 + length));
+  }
+  offset += 12 + length;
+}
+
+const compressed = Buffer.concat(idatBuffers);
+const decompressed = zlib.inflateSync(compressed);
+const scanlineLength = width * 4 + 1;
+
+// Build pixel grid matrix
+const grid = [];
+for (let y = 0; y < height; y++) {
+  const row = [];
+  for (let x = 0; x < width; x++) {
+    const a = decompressed[y * scanlineLength + 1 + x * 4 + 3];
+    row.push(a > 100 ? 1 : 0);
+  }
+  grid.push(row);
+}
+
+// Center of pupil: X=418, Y=852, Radius=75px
+const centerX = 418, centerY = 852, radius = 75;
+
+let pathStem = [], pathPupil = [];
+
+for (let y = 0; y < height; y++) {
+  for (let x = 0; x < width; x++) {
+    if (grid[y][x] === 1) {
+      const dist = Math.hypot(x - centerX, y - centerY);
+      if (dist <= radius && y >= 770) {
+        pathPupil.push(`M${x},${y}h1v1h-1z`);
+      } else {
+        pathStem.push(`M${x},${y}h1v1h-1z`);
+      }
+    }
+  }
+}
+
+const svgContent = `<svg class="sol-eye-icon-svg" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
+  <g class="sol-stem-group">
+    <path class="sol-exact-stem" d="${pathStem.join('')}" />
+  </g>
+  <g class="sol-pupil-group">
+    <path class="sol-exact-pupil" d="${pathPupil.join('')}" />
+  </g>
+</svg>`;
+
+fs.writeFileSync('exact_sol_vector.svg', svgContent);
+console.log('Successfully generated exact_sol_vector.svg! Stem pixels:', pathStem.length, 'Pupil pixels:', pathPupil.length);
